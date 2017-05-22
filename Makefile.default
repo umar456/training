@@ -1,0 +1,15 @@
+# Set up environmental variables:
+XILINX_SDACCEL=/opt/Xilinx/SDx/2016.4
+XILINX_OPENCL := $(XILINX_SDACCEL)/runtime
+DSA := xilinx:adm-pcie-7v3:1ddr:3.0
+XOCC := $(XILINX_SDACCEL)/bin/xocc
+CXX := $(XILINX_SDACCEL)/lnx64/tools/clang-3.9/bin/clang++
+CXX_LIB:=$(XILINX_SDACCEL)/lnx64/tools/clang-3.9/lib
+
+OPENCL_INC := $(XILINX_OPENCL)/include/1_2
+OPENCL_LIB := $(XILINX_OPENCL)/lib/x86_64
+
+CXXFLAGS := -g -Wall -Werror -Wno-error=uninitialized -std=c++11 -pthread
+LDFLAGS = -Wl,-rpath=$(CXX_LIB) -L$(CXX_LIB) -lrt -L$(OPENCL_LIB) -lOpenCL -lpthread
+
+XOCCFLAGS:=-g --xdevice $(DSA)
