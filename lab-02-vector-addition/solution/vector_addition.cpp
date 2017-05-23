@@ -29,9 +29,9 @@ int main(void) {
   cl::Program::Binaries binaries;
   binaries.push_back(std::make_pair(contents.data(), contents.size()));
 
-  cl::Program program(context, devices, binaries);
+  cl::Program add_program(context, devices, binaries);
 
-  cl::Kernel add_kernel(program, "add");
+  cl::Kernel add_kernel(add_program, "add");
 
   // setup data and create buffers
   int N = 100;

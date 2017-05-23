@@ -74,7 +74,7 @@ int main(void) {
   cl::Program increment_program(context, devices, binaries);
 
   // After the program is created, we can create kernels
-  cl::Kernel increment_kernel(program, "increment");
+  cl::Kernel increment_kernel(increment_program, "increment");
 
   // Create an input buffer with one element
   cl::Buffer val(context, CL_MEM_READ_WRITE, sizeof(int));
