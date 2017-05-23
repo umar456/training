@@ -3,7 +3,7 @@
 // instead of float/ints
 
 __kernel
-void pi_vector_reduction(__global float16 *gX, __global float16 *gY,
+void pi_vector_with_reduction(__global float16 *gX, __global float16 *gY,
                          __global int *results) {
   int id = get_global_id(0);
 
