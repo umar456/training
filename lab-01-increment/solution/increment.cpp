@@ -74,8 +74,7 @@ int main(void) {
   cl::Program increment_program(context, devices, binaries);
 
   // After the program is created, we can create kernels
-  vector<cl::Kernel> kernels;
-  increment_program.createKernels(&kernels);
+  cl::Kernel increment_kernel(program, "increment");
 
   // Create an input buffer with one element
   cl::Buffer val(context, CL_MEM_READ_WRITE, sizeof(int));
@@ -86,8 +85,8 @@ int main(void) {
   queue.enqueueWriteBuffer(val, CL_FALSE, 0, sizeof(int), &hostVal);
 
   // Set the kernel arguments and launch the kernel.
-  kernels[0].setArg(0, val);
-  queue.enqueueNDRangeKernel(kernels[0], 0, 1);
+  increment_kernel.setArg(0, val);
+  queue.enqueueNDRangeKernel(increment_kernel, 0, 1);
 
   // Read the result from the device and print it.
   queue.enqueueReadBuffer(val, CL_TRUE, 0, sizeof(int), &hostVal);

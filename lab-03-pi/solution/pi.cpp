@@ -111,8 +111,7 @@ void pi_initial(vector<float> &h_X, vector<float> &h_Y) {
 
   Program program(context, devices, binaries);
 
-  vector<Kernel> kernels;
-  program.createKernels(&kernels);
+  cl::Kernel pi_kernel(program, "pi_initial");
 
   // Setup buffers
   size_t size = samples * sizeof(float);
@@ -124,10 +123,10 @@ void pi_initial(vector<float> &h_X, vector<float> &h_Y) {
   Event launch;
 
   // Setup and launch kernel
-  kernels[0].setArg(0, d_X);
-  kernels[0].setArg(1, d_Y);
-  kernels[0].setArg(2, d_results);
-  queue.enqueueNDRangeKernel(kernels[0], 0, NDRange(samples), NullRange,
+  pi_kernel.setArg(0, d_X);
+  pi_kernel.setArg(1, d_Y);
+  pi_kernel.setArg(2, d_results);
+  queue.enqueueNDRangeKernel(pi_kernel, 0, NDRange(samples), NullRange,
                              NULL, &launch);
 
   launch.wait();
@@ -179,8 +178,7 @@ void pi_vector_types(vector<float> &h_X, vector<float> &h_Y) {
 
   Program program(context, devices, binaries);
 
-  vector<Kernel> kernels;
-  program.createKernels(&kernels);
+  cl::Kernel pi_kernel(program, "pi_vector_types");
 
   // Setup buffers
   size_t size = samples * sizeof(float);
@@ -192,10 +190,10 @@ void pi_vector_types(vector<float> &h_X, vector<float> &h_Y) {
   Event launch;
 
   // Setup and launch kernel
-  kernels[0].setArg(0, d_X);
-  kernels[0].setArg(1, d_Y);
-  kernels[0].setArg(2, d_results);
-  queue.enqueueNDRangeKernel(kernels[0], 0, NDRange(samples / CL_VECTOR_SIZE),
+  pi_kernel.setArg(0, d_X);
+  pi_kernel.setArg(1, d_Y);
+  pi_kernel.setArg(2, d_results);
+  queue.enqueueNDRangeKernel(pi_kernel, 0, NDRange(samples / CL_VECTOR_SIZE),
                              NullRange, NULL, &launch);
 
   launch.wait();
@@ -237,8 +235,7 @@ void pi_async_copy(vector<float> &h_X, vector<float> &h_Y) {
 
   Program program(context, devices, binaries);
 
-  vector<Kernel> kernels;
-  program.createKernels(&kernels);
+  cl::Kernel pi_kernel(program, "pi_async_copy");
 
   // Setup buffers
   size_t size = samples * sizeof(float);
@@ -250,11 +247,11 @@ void pi_async_copy(vector<float> &h_X, vector<float> &h_Y) {
   Event launch;
 
   // Setup and launch kernel
-  kernels[0].setArg(0, d_X);
-  kernels[0].setArg(1, d_Y);
-  kernels[0].setArg(2, d_results);
-  kernels[0].setArg(3, samples);
-  queue.enqueueNDRangeKernel(kernels[0], 0, NDRange(samples / 16, 1, 1),
+  pi_kernel.setArg(0, d_X);
+  pi_kernel.setArg(1, d_Y);
+  pi_kernel.setArg(2, d_results);
+  pi_kernel.setArg(3, samples);
+  queue.enqueueNDRangeKernel(pi_kernel, 0, NDRange(samples / 16, 1, 1),
                              NDRange(4, 1, 1), NULL, &launch);
 
   launch.wait();
@@ -296,8 +293,7 @@ void pi_async_with_reduction(vector<float> &h_X, vector<float> &h_Y) {
 
   Program program(context, devices, binaries);
 
-  vector<Kernel> kernels;
-  program.createKernels(&kernels);
+  cl::Kernel pi_kernel(program, "pi_async_with_reduction");
 
   // Setup buffers
   size_t size = samples * sizeof(float);
@@ -309,11 +305,11 @@ void pi_async_with_reduction(vector<float> &h_X, vector<float> &h_Y) {
   Event launch;
 
   // Setup and launch kernel
-  kernels[0].setArg(0, d_X);
-  kernels[0].setArg(1, d_Y);
-  kernels[0].setArg(2, d_results);
-  kernels[0].setArg(3, samples);
-  queue.enqueueNDRangeKernel(kernels[0], 0,
+  pi_kernel.setArg(0, d_X);
+  pi_kernel.setArg(1, d_Y);
+  pi_kernel.setArg(2, d_results);
+  pi_kernel.setArg(3, samples);
+  queue.enqueueNDRangeKernel(pi_kernel, 0,
                              NDRange(samples / CL_VECTOR_SIZE, 1, 1),
                              NDRange(4, 1, 1), NULL, &launch);
 
@@ -357,8 +353,7 @@ void pi_vector_with_reduction(vector<float> &h_X, vector<float> &h_Y) {
 
   Program program(context, devices, binaries);
 
-  vector<Kernel> kernels;
-  program.createKernels(&kernels);
+  cl::Kernel pi_kernel(program, "pi_vector_with_reduction");
 
   // Setup buffers
   size_t size = samples * sizeof(float);
@@ -370,10 +365,10 @@ void pi_vector_with_reduction(vector<float> &h_X, vector<float> &h_Y) {
   Event launch;
 
   // Setup and launch kernel
-  kernels[0].setArg(0, d_X);
-  kernels[0].setArg(1, d_Y);
-  kernels[0].setArg(2, d_results);
-  queue.enqueueNDRangeKernel(kernels[0], 0, NDRange(samples / CL_VECTOR_SIZE),
+  pi_kernel.setArg(0, d_X);
+  pi_kernel.setArg(1, d_Y);
+  pi_kernel.setArg(2, d_results);
+  queue.enqueueNDRangeKernel(pi_kernel, 0, NDRange(samples / CL_VECTOR_SIZE),
                              NullRange, NULL, &launch);
 
   launch.wait();

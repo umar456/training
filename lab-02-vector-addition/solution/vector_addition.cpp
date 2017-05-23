@@ -31,8 +31,7 @@ int main(void) {
 
   cl::Program program(context, devices, binaries);
 
-  vector<Kernel> kernels;
-  program.createKernels(&kernels);
+  cl::Kernel add_kernel(program, "add");
 
   // setup data and create buffers
   int N = 100;
@@ -46,12 +45,12 @@ int main(void) {
   Buffer d_c(context, CL_MEM_WRITE_ONLY, size);
 
   // Setup and launch kernel
-  kernels[0].setArg(0, d_a);
-  kernels[0].setArg(1, d_b);
-  kernels[0].setArg(2, d_c);
+  add_kernel.setArg(0, d_a);
+  add_kernel.setArg(1, d_b);
+  add_kernel.setArg(2, d_c);
 
   // Enqueue the kernel with automatically determined work groups
-  queue.enqueueNDRangeKernel(kernels[0], 0, N);
+  queue.enqueueNDRangeKernel(add_kernel, 0, N);
 
   // Retreive new values
   queue.enqueueReadBuffer(d_c, CL_TRUE, 0, size, &h_c.front());
